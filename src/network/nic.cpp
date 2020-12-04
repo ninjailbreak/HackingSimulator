@@ -1,40 +1,8 @@
-#pragma once
+#include "nic.hpp"
 
-#ifdef _WIN32 
-#include <WinSock2.h>
-
-#elif __linux__
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
-#endif // check system
-
-#include "module.h"
-
-class NetworkCard: public Module
-{
-public:
-	NetworkCard(uint32_t ip, uint32_t subnet, std::string mac);
-	NetworkCard(uint32_t ip, uint32_t subnet, std::string mac, std::string name, std::string version);
-	~NetworkCard();
-
-	std::string GetIPAsText();
-	uint32_t GetIPAsNum();
-	
-	std::string GetMac();
-
-	std::string GetSubnetAsText();
-	uint32_t GetSubnetAsNum();
-
-	bool IsInNetwork(uint32_t ip);
-	bool IsInNetwork(NetworkCard* nic);
-
-private:
-	uint32_t _ip;
-	uint32_t _subnet;
-	std::string _mac;
-};
+/****************
+ * Constructors *
+ ****************/
 
 NetworkCard::NetworkCard(uint32_t ip, uint32_t subnet, std::string mac) : NetworkCard(ip, subnet, mac, "Generic Network Card", "1.0.0"){}
 
@@ -45,8 +13,15 @@ NetworkCard::NetworkCard(uint32_t ip, uint32_t subnet, std::string mac, std::str
 	this->_mac = mac;
 }
 
+/****************
+ * Destructors *
+ ****************/
+
 NetworkCard::~NetworkCard(){}
 
+/*****************
+ * IPs functions *
+ *****************/
 
 std::string NetworkCard::GetIPAsText() 
 {
@@ -60,6 +35,10 @@ uint32_t NetworkCard::GetIPAsNum()
 	return this->_ip;
 }
 
+/********************
+ * Subnet functions *
+ ********************/
+
 std::string NetworkCard::GetSubnetAsText()
 {
 	struct in_addr subnet_struct;
@@ -72,10 +51,19 @@ uint32_t NetworkCard::GetSubnetAsNum()
 	return this->_subnet;
 }
 
+
+/*****************
+ * Mac functions *
+ *****************/
+
 std::string NetworkCard::GetMac()
 {
 	return this->_mac;
 }
+
+/*************************
+ * Enumeration functions *
+ *************************/
 
 bool NetworkCard::IsInNetwork(uint32_t ip) 
 {

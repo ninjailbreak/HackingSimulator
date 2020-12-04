@@ -11,12 +11,3 @@ protected:
 	std::string _name;
 
 };
-
-Device::Device(std::string name)
-{
-	this->_name = name;
-}
-
-Device::~Device()
-{
-}
